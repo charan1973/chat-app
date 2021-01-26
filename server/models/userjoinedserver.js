@@ -40,7 +40,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "UserJoinedServer",
-      tableName: "user_joined_servers",
+      tableName: "user_joined_servers"
     }
   );
   return UserJoinedServer;

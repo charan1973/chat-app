@@ -31,7 +31,7 @@ exports.registerUser = async (req, res) => {
         const newUser = await User.create({...req.body, password: hashedPassword})
 
         const token = await jwt.sign(
-            { id: newUser._id, username: newUser.username, email: newUser.email },
+            { id: newUser.id, username: newUser.username, email: newUser.email },
             process.env.SECRET
           );
         

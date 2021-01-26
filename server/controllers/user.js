@@ -1,7 +1,16 @@
 const { UserJoinedServer, Server, Group, Channel } = require("../models");
+const {Op} = require("sequelize")
 
 exports.userJoinServer = async (req, res) => {
   const { serverId } = req.params;
+
+  const isAlreadyJoined = await UserJoinedServer.findOne({where: {
+    [Op.and]: [
+      {user: req.user.id},
+      {server: serverId}
+    ]
+  }})
+  if(isAlreadyJoined) return res.json({error: "Already joined the server"})
 
   try {
     const joinServer = await UserJoinedServer.create({
