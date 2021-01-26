@@ -12,8 +12,12 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       User.hasMany(models.Server, {
-        as: 'servers',
+        as: 'user_to_servers',
         foreignKey: 'creatorId'
+      })
+      User.hasMany(models.UserJoinedServer, {
+        as: 'user_to_joined',
+        foreignKey: 'user'
       })
     }
   };
@@ -33,6 +37,14 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING
+    },
+    user_image_url: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    user_image_public_id: {
+      type: DataTypes.TEXT,
+      allowNull: true
     }
   }, {
     sequelize,

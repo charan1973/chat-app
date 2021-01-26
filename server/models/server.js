@@ -9,22 +9,28 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+
     static associate(models) {
       // define association here
       Server.belongsTo(models.User, {
         onDelete: "SET NULL",
         foreignKey: 'creatorId',
-        as: 'server_creator'
+        as: 'server_from_creator'
       })
       Server.hasMany(models.Group, {
-        as: 'groups',
+        as: 'server_to_groups',
         foreignKey: 'serverId'
       })
       Server.hasMany(models.Channel, {
-        as: 'channels',
+        as: 'server_to_channels',
         foreignKey: 'serverId'
       })
+      Server.hasMany(models.UserJoinedServer, {
+        as: 'server_to_joined',
+        foreignKey: 'server'
+      })
     }
+
   };
   Server.init({
     id: {
@@ -47,20 +53,12 @@ module.exports = (sequelize, DataTypes) => {
         key: "id"
       }
     },
-    image_url: {
-      type: DataTypes.STRING,
+    server_image_url: {
+      type: DataTypes.TEXT,
       allowNull: true
     },
-    image_secure_url: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    image_public_id: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    image_asset_id: {
-      type: DataTypes.STRING,
+    server_image_public_id: {
+      type: DataTypes.TEXT,
       allowNull: true
     }
   }, {

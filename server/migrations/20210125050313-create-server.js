@@ -22,20 +22,12 @@ module.exports = {
           key: "id",
         },
       },
-      image_url: {
-        type: DataTypes.STRING,
+      server_image_url: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
-      image_secure_url: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      image_public_id: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      image_asset_id: {
-        type: DataTypes.STRING,
+      server_image_public_id: {
+        type: DataTypes.TEXT,
         allowNull: true,
       },
       createdAt: {

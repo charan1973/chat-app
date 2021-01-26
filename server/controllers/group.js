@@ -14,11 +14,12 @@ exports.findGroupById = (req, res, next, id) => {
 exports.createGroup = async (req, res) => {
     const {groupName, serverId} = req.body
 
-    const server = await Server.findOne({where: {id: serverId}})
-    if(server.creatorId !== req.user.id) return res.json({error: "Yo dude! It's none of your business"}) 
-
+    
     try{
+        const server = await Server.findOne({where: {id: serverId}})
+
         const newGroup = await Group.create({groupName, serverId, creatorId: req.user.id })
+        
         return res.json({message: `${newGroup.groupName} is created in the ${server.serverName} server`})
     }catch(err){
         return res.json({error: "Error creating group"})

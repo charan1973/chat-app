@@ -12,17 +12,17 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Group.belongsTo(models.Server, {
-        as: 'server',
+        as: 'group_from_server',
         foreignKey: 'serverId',
         onDelete: 'CASCADE'
       })
       Group.belongsTo(models.User, {
-        as: 'group_creator',
+        as: 'group_from_creator',
         foreignKey: 'creatorId',
         onDelete: 'SET NULL'
       })
       Group.hasMany(models.Channel, {
-        as: 'group',
+        as: 'group_to_channels',
         foreignKey: 'groupId'
       })
     }

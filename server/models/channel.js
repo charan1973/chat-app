@@ -12,17 +12,17 @@ module.exports = (sequelize, DataTypes) => {
       Channel.belongsTo(models.Group, {
         onDelete: "CASCADE",
         foreignKey: "groupId",
-        as: 'channel_group'
+        as: 'channel_from_group'
       })
       Channel.belongsTo(models.Server, {
         onDelete: "CASCADE",
         foreignKey: "serverId",
-        as: 'channel_server'
+        as: 'channel_from_server'
       })
       Channel.belongsTo(models.User, {
         onDelete: "CASCADE",
         foreignKey: "creatorId",
-        as: 'channel_creator'
+        as: 'channel_from_creator'
       })
     }
   }
