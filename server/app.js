@@ -8,19 +8,8 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors());
 
-// Import routes here
-const authRoutes = require("./routes/auth")
-const serverRoutes = require("./routes/server")
-const groupRoutes = require("./routes/group")
-const channelRoutes = require("./routes/channel")
-const userRoutes = require("./routes/user")
-
-// Use routes here
-app.use("/api/auth/", authRoutes)
-app.use("/api/server/", serverRoutes)
-app.use("/api/group/", groupRoutes)
-app.use("/api/channel/", channelRoutes)
-app.use("/api/user/", userRoutes)
+//routes import
+app.use("/api/", require("./routes"))
 
 // Serve frontend as static assets if in production
 if (process.env.NODE_ENV === "production") {
