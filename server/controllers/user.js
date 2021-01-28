@@ -25,6 +25,7 @@ exports.userJoinServer = async (req, res) => {
 
 exports.getUserJoinedServers = async (req, res) => {
   try {
+    
     const joinedServers = await UserJoinedServer.findAll({
       where: { user: req.user.id },
       attributes: ["server"],
@@ -47,6 +48,7 @@ exports.getUserJoinedServers = async (req, res) => {
         },
       ],
     });
+
     return res.json({ servers: joinedServers });
   } catch (error) {
     console.log(error);
