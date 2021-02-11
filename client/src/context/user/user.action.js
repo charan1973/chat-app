@@ -1,5 +1,5 @@
 
-import { LOGIN_USER, LOGOUT_USER } from "./userTypes";
+import { LOGIN_USER, LOGOUT_USER } from "./user.types";
 
 export const loginAction = (payload) => ({
     type: LOGIN_USER,

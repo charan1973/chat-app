@@ -1,43 +1,49 @@
 import { Box, Button, Divider, Text, useToast } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { loginAction } from "../../context/user/user.action";
+import { UserContext } from "../../context/user/UserContext";
 import { register } from "../../pages/Auth/auth.helper";
 import FormInput from "../FormInput/FormInput.component";
 
 const Register = () => {
-    const history = useHistory()
-    const toast = useToast()
-    const [form, setForm] = useState({
-        username: "",
-        email: "",
-        password: ""
-    })
+  const { userDispatch } = useContext(UserContext);
 
-    const handleValueChange = (e) => {
-        const {name, value} = e.target
-        setForm({...form, [name]: value})
-    }
+  const history = useHistory();
+  const toast = useToast();
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+  });
 
-    const handleRegisterSubmit = (e) => {
-        e.preventDefault()
-        register(form)
-        .then(({data}) => {
-            if(data.user){
-                toast({
-                    title: "Success",
-                    description: "Sign up success",
-                    status: "success"
-                })
-                history.push("/")
-            }else if(data.error){
-                toast({
-                    title: "Error",
-                    description: data.error,
-                    status: "error"
-                })
-            }
-        })
-    }
+  const handleValueChange = (e) => {
+    const { name, value } = e.target;
+    setForm({ ...form, [name]: value });
+  };
+
+  const handleRegisterSubmit = (e) => {
+    e.preventDefault();
+    register(form).then(({ data }) => {
+      if (data.user) {
+        userDispatch(loginAction(data.user));
+        toast({
+          title: "Success",
+          description: "Sign up success",
+          status: "success",
+        });
+        setTimeout(() => {
+          history.push("/");
+        }, 3000);
+      } else if (data.error) {
+        toast({
+          title: "Error",
+          description: data.error,
+          status: "error",
+        });
+      }
+    });
+  };
 
   return (
     <Box

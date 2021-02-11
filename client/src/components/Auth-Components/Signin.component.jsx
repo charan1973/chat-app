@@ -1,12 +1,17 @@
 import { Box, Button, Divider, Text, useToast } from "@chakra-ui/react";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { loginAction } from "../../context/user/user.action";
+import { UserContext } from "../../context/user/UserContext";
 import { signIn } from "../../pages/Auth/auth.helper";
 import FormInput from "../FormInput/FormInput.component";
 
 const SignIn = () => {
-  const history = useHistory()
-  const toast = useToast()
+  const history = useHistory();
+  const toast = useToast();
+
+  const { userDispatch } = useContext(UserContext);
+
   const [form, setForm] = useState({
     email: "",
     password: "",
@@ -19,23 +24,25 @@ const SignIn = () => {
 
   const handleSignInSubmit = (e) => {
     e.preventDefault();
-    signIn(form)
-    .then(({data}) => {
-        if(data.user){
-            toast({
-                title: "Success",
-                description: "Sign in success",
-                status: "success"
-            })
-            history.push("/")
-        }else if(data.error){
-            toast({
-                title: "Error",
-                description: data.error,
-                status: "error"
-            })
-        }
-    })
+    signIn(form).then(({ data }) => {
+      if (data.user) {
+        userDispatch(loginAction(data.user));
+        toast({
+          title: "Success",
+          description: "Sign in success",
+          status: "success",
+        });
+        setTimeout(() => {
+          history.push("/");
+        }, 3000);
+      } else if (data.error) {
+        toast({
+          title: "Error",
+          description: data.error,
+          status: "error",
+        });
+      }
+    });
   };
 
   return (
