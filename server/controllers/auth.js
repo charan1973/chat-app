@@ -31,19 +31,20 @@ exports.registerUser = async (req, res) => {
         const newUser = await User.create({...req.body, password: hashedPassword})
 
         const token = await jwt.sign(
-            { id: newUser.id, username: newUser.username, email: newUser.email },
+            { id: newUser.id, username: newUser.username, email: newUser.email, user_image_url: newUser.user_image_url },
             process.env.SECRET
           );
         
         res.cookie("token", token, { httpOnly: true });
 
         return res.json({
-            user: {
-              name: newUser.username,
-              email: newUser.email,
-              id: newUser.id,
-            },
-          });
+          user: {
+            name: newUser.username,
+            email: newUser.email,
+            id: newUser.id,
+            user_image_url: newUser.user_image_url
+          },
+        });
 
     }catch(err){
         console.log(err);
@@ -65,7 +66,7 @@ exports.signInUser = async (req, res) => {
       if (!checkPassword) return res.json({ error: "Email/Password is wrong" });
     
       const token = await jwt.sign(
-        { id: findUser.id, username: findUser.username, email: findUser.email },
+        { id: findUser.id, username: findUser.username, email: findUser.email, user_image_url: findUser.user_image_url },
         process.env.SECRET
       );
     
@@ -76,6 +77,7 @@ exports.signInUser = async (req, res) => {
           name: findUser.username,
           email: findUser.email,
           id: findUser.id,
+          user_image_url: findUser.user_image_url
         },
       });
     }catch(err){
@@ -87,3 +89,7 @@ exports.signOutUser = (req, res) => {
     res.clearCookie("token");
     return res.json({ message: "Signout successfully" });
   };
+
+exports.authenticateUser = (req, res) => {
+  return res.json({user: req.user})
+}

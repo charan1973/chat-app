@@ -1,4 +1,4 @@
-const { Server, UserJoinedServer } = require("../models");
+const { Server, UserJoinedServer, Channel, Group } = require("../models");
 const { Op } = require("sequelize");
 const uploader = require("../config/cloudinary.config");
 
@@ -24,7 +24,24 @@ exports.createServer = async (req, res) => {
       creatorId: req.user.id,
     });
     res.json({ message: `${newServer.serverName} is created` });
-    await UserJoinedServer.create({server: newServer.id, user: req.user.id})
+
+    // Add the creator to user joined table after creation of the server
+    UserJoinedServer.create({ server: newServer.id, user: req.user.id });
+
+    //Create new group 'Text-Channel'
+    const newGroup = await Group.create({
+      groupName: "Text-Channel",
+      serverId: newServer.id,
+      creatorId: req.user.id,
+    });
+
+    // Create a 'general' channel to initiate the server
+    Channel.create({
+      serverId: newServer.id,
+      creatorId: req.user.id,
+      groupId: newGroup.id,
+      channelName: "general",
+    });
   } catch (err) {
     console.log(err);
     return res.json({ error: "Error creating server" });
@@ -43,10 +60,8 @@ exports.updateServer = async (req, res) => {
       { folder: "discord/server_dp/" }
     );
     image = {
-      image_url: url,
-      image_secure_url: secure_url,
-      image_public_id: public_id,
-      image_asset_id: asset_id,
+      server_image_url: url,
+      server_image_public_id: public_id,
     };
   }
 
