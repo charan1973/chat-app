@@ -14,6 +14,7 @@ const ServerContextProvider = ({ children }) => {
       joinedServers: [],
       activeServer: {},
       activeChannel: {},
+      update: false
     }
   );
 
@@ -25,7 +26,7 @@ const ServerContextProvider = ({ children }) => {
         }
       });
     }
-  }, [user]);
+  }, [user, server.update]);
 
   return (
     <ServerContext.Provider value={{ server, serverDispatch }}>

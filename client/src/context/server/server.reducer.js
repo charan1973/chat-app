@@ -1,4 +1,4 @@
-import { SET_JOINED_SERVERS, SET_ACTIVE_SERVER, SET_ACTIVE_CHANNEL } from "./server.types";
+import { SET_JOINED_SERVERS, SET_ACTIVE_SERVER, SET_ACTIVE_CHANNEL, UPDATE_JOINED_SERVERS } from "./server.types";
 import {setActiveServer} from "./server.utils"
 
 const serverReducer = (state, action) => {
@@ -17,6 +17,11 @@ const serverReducer = (state, action) => {
             return {
                 ...state,
                 activeChannel: action.payload
+            }
+        case UPDATE_JOINED_SERVERS:
+            return {
+                ...state,
+                update: !state.update
             }
         default:
             return state

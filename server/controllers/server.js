@@ -51,18 +51,22 @@ exports.createServer = async (req, res) => {
 exports.updateServer = async (req, res) => {
   let image = {};
 
-  if (req.server.creatorId !== req.user.id)
+  if (req.server.creatorId !== req.user.id || req.body.creatorId)
     return res.json({ error: "403! Forbidden route" });
 
   if (req.file !== undefined) {
-    const { url, secure_url, public_id, asset_id } = await uploader.upload(
+    
+    const { url, public_id } = await uploader.upload(
       req.file.path,
       { folder: "discord/server_dp/" }
-    );
-    image = {
-      server_image_url: url,
-      server_image_public_id: public_id,
-    };
+      )
+      
+      image = {
+        server_image_url: url,
+        server_image_public_id: public_id,
+      };
+
+      uploader.destroy(req.server.server_image_public_id) //Delete the old image
   }
 
   try {
@@ -70,7 +74,7 @@ exports.updateServer = async (req, res) => {
       { ...req.body, ...image },
       { where: { id: req.server.id }, returning: true }
     );
-    return res.json({ message: `${updatedServer[1][0].serverName} updated` });
+    return res.json({ message: `${req.body.serverName} updated` });
   } catch (err) {
     console.log(err);
     return res.json({ error: "Error updating the server" });

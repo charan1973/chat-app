@@ -18,7 +18,7 @@ const ServerIcon = ({ server, onClick }) => {
         flexDirection="column"
         justifyContent="center"
         alignItems="center"
-        _hover={{ borderRadius: "10%", backgroundColor: "gray.500" }}
+        _hover={{ backgroundColor: "gray.500" }}
         cursor="pointer"
         mt="7px"
         onClick={() => {serverDispatch(setActiveServerAction(server.id))}}

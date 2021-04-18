@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const { sequelize } = require("./models");
 
 const app = express();
 app.use(express.json());
@@ -22,6 +23,14 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const port = process.env.PORT || 8000;
-app.listen(port, (req, res) => {
+app.listen(port, async (req, res) => {
   console.log(`Server is running at ${port}`);
+
+  try {
+    await sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+  
 });
