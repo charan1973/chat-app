@@ -17,6 +17,9 @@ exports.createGroup = async (req, res) => {
     
     try{
         const server = await Server.findOne({where: {id: serverId}})
+        if(!server){
+            return res.json({error: "Cannot find matching server"})
+        }
 
         const newGroup = await Group.create({groupName, serverId, creatorId: req.user.id })
         

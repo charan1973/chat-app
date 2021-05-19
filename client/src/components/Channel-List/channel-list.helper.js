@@ -1,9 +1,13 @@
 import axios from "axios"
 
-const serverAPI = "/api/server"
+const API = "/api/"
 
 export const updateServer = (serverId, server) => {
-    console.log(server);
-    return axios.put(`${serverAPI}/update/${serverId}`, server)
+    return axios.put(`${API}/server/update/${serverId}`, server)
+            .catch(err => console.log(err))
+}
+
+export const createGroup = ({groupName, serverId}) => {
+    return axios.post(`${API}/group/create`, {groupName, serverId})
             .catch(err => console.log(err))
 }
